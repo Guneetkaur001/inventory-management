@@ -1,0 +1,120 @@
+
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: ghostwhite; 
+}
+
+
+main {
+    padding: 50px;
+    background-color: black; 
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+input[type="text"], input[type="number"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: orange;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logo {
+    position: absolute;
+    top: 40px; 
+    left: 40px;
+    width: 100px; 
+    height: auto; 
+}
+
+header {
+    background-color: orange;
+    color: black;
+    padding: 20px;
+    text-align: right;
+}
+
+footer {
+    background-color: orange;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+h1, h2 {
+    font-weight:bolder;
+    color: black;
+    font-size:xx-large;
+}
+
+footer.orange-strip {
+    text-align: center;
+}
+.box1, .box2, .box3 {
+    margin: 10px;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.box1 h2, .box2 h2, .box3 h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.box1 table, .box2 table, .box3 table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.box1 th, .box1 td,
+.box2 th, .box2 td,
+.box3 th, .box3 td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.box1 tr:nth-child(even),
+.box2 tr:nth-child(even),
+.box3 tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+@media print {
+    header, footer, .sidebar {
+        display: none;
+    }
+   
+}

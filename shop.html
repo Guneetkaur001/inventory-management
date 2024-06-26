@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
+
+</head>
+<body>
+    
+    <header>
+        <img src="logo.jpeg" alt="Your Logo" class="logo">
+        <h1>My Shop</h1>
+    </header>
+    <footer 
+        <div class="footer-left">
+            <p>123 Main Street, City, Country 
+                General Store
+            Model Town Amritsar</p>
+           
+        </div>
+        <div class="footer-right">
+            <p>Date: 2024-06-25</p> 
+            <p>Bill Number: 12345</p> 
+            <p>Ph: 456789</p>
+        </div>
+    </footer>
+    
+    <div class="box1">
+
+    <table>
+        <h2><tr>
+            <th>Product</th>
+            <th>Per Unit Price</th>
+        </tr></h2>
+    
+        <tr><td>Gents Coat</td><td class="right-text">500</td></tr>
+        <tr><td>Hoodie</td><td class="right-text">600</td></tr>
+        <tr><td>Ladies Coat</td><td class="right-text">550</td></tr>
+        <tr><td>Crop Jacket</td><td class="right-text">1000</td></tr>
+        <tr><td>Jacket</td><td class="right-text">800</td></tr>
+        <tr><td>Top</td><td class="right-text">400</td></tr>
+        
+    </table>
+</div>
+    <form action="/shop" method="post">
+        <label for="productName">Enter Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
+        <label for="quantity">Enter Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required>
+        <button type="submit">Add to Cart</button>
+    </form>
+    <div class="box2">
+    <h2>Cart Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody id="cart-table-body">
+          
+           
+        </tbody>
+       
+    </table>
+</div>
+<div class="box3">
+    <h2>Bill Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">Bill Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Total Amount</td>
+                <td class="right-text" id="total-amount"></td>
+            </tr>
+            <tr>
+                <td>Tax Amount(Gst/Cst)</td>
+                <td class="right-text" id="tax-amount"></td>
+            </tr>
+            <tr>
+                <td>Net Bill</td>
+                <td class="right-text" id="net-bill"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <!-- Clear Cart button -->
+    <form action="/clear_cart" method="post">
+        <button type="submit" id="clear-cart-button">Clear Cart</button>
+    </form>
+    
+    <div>
+        <tr></tr>
+        <button onClick="window.print()">Print this page</button>
+    </div>
+    
+    <h3>Thank you for visiting!</h3>
+    <!-- Store details -->
+    <footer class="orange-strip">
+        <p>Guneet General Store   |   Model Town Amritsar   |   Ph: 456789</p>
+    </footer>
+    <script>
+      
+        const products = [
+            { name: "Ladies Coat", price: 550 },
+            { name: "Gents Coat", price: 500 },
+            { name: "Hoodie", price: 600 },
+            { name: "Jacket", price: 800 },
+            { name: "Top", price: 400 },
+            { name: "Crop Jacket", price: 1000 },
+           
+        ];
+    
+        const productNameInput = document.getElementById('productName');
+        const quantityInput = document.getElementById('quantity');
+        const cartTableBody = document.getElementById('cart-table-body');
+        const totalAmountCell = document.getElementById('total-amount');
+        const taxAmountCell = document.getElementById('tax-amount');
+        const netBillCell = document.getElementById('net-bill');
+        let cartItems = [];
+    
+        // Event listener for form submission
+        document.querySelector('form').addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent form submission
+    
+            // Get user input
+            const productName = productNameInput.value;
+            const quantity = parseInt(quantityInput.value);
+    
+            // Find the selected product
+            const product = products.find(p => p.name === productName);
+    
+            if (product) {
+                // Calculate subtotal
+                const subtotal = product.price * quantity;
+    
+                // Update cart table
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${productName}</td>
+                    <td>${quantity}</td>
+                    <td>${subtotal}</td>
+                `;
+                cartTableBody.appendChild(newRow);
+    
+                // Update cart items
+                cartItems.push({ productName, quantity, subtotal });
+             
+                // Update bill details
+                const totalAmount = cartItems.reduce((acc, item) => acc + item.subtotal, 0);
+                const taxAmount = totalAmount * 0.18; // Example tax calculation (adjust as needed)
+                const netBill = totalAmount + taxAmount;
+                totalAmountCell.textContent = totalAmount;
+                taxAmountCell.textContent = taxAmount;
+                netBillCell.textContent = netBill;
+            }
+        });
+            // Clear input fields
+            productNameInput.value = '';
+            quantityInput.value = '';
+            document.getElementById('clear-cart-button').addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent form submission
+
+        // Clear cartItems array
+        cartItems = [];
+
+
+
+        // Clear cart table
+        cartTableBody.innerHTML = '';
+
+        // Clear bill details
+        totalAmountCell.textContent = '';
+        taxAmountCell.textContent = '';
+        netBillCell.textContent = '';
+
+        
+        fetch('/clear_cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({}) 
+        }).then(response => {
+          
+            console.log('Cart cleared successfully');
+        }).catch(error => {
+            console.error('Error clearing cart:', error);
+        });
+    });
+    </script>
+ 
+</body>
+</html>
+
